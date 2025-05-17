@@ -18,6 +18,7 @@ fn main() {
             println!("        |ROW2_COL1|ROW2_COL2|...|");
             println!("        |...      |...      |...|");
             println!("        +---------+---------+---+");
+            exit(22);
         }
         for arg in args {
 
