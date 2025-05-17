@@ -39,7 +39,11 @@ fn main() {
         }
     }
 
-    println!("{:?}", get_len_data(&datas));
+    {
+        // output
+        let len_data = get_len_data(&datas);
+        println!("{}", mk_sepver(&len_data));
+    }
 
     println!("-------------DEBUG:-------------\ndatas:\n{:#?}\n/datas:\nditer: {}", datas, diter);
 }
@@ -78,4 +82,20 @@ fn get_len_data(datas: &Vec<Vec<String>>) -> Vec<usize> {
     }
 
     return lends;
+}
+
+fn mk_sepver(len_data: &Vec<usize>) -> String {
+
+    let sepver = '-';
+    let cross = '+';
+    let mut s = String::from(cross);
+
+    for len in len_data {
+        for _count in 0..=*len {
+            s.push(sepver);
+        }
+        s.push(cross);
+    }
+
+    s
 }
