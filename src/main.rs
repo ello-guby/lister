@@ -1,7 +1,6 @@
 use std::process::exit;
 
 fn main() {
-    println!("-------------START:-------------");
 
     let mut datas: Vec<Vec<String>> = vec![vec![]];
 
