@@ -43,9 +43,13 @@ fn main() {
         // output
         let len_data = get_len_data(&datas);
         println!("{}", mk_sepver(&len_data));
+        println!("{}", mk_sephor(&datas[0], &len_data));
+        println!("{}", mk_sepver(&len_data));
+        for i in 1..datas.len() {
+            println!("{}", mk_sephor(&datas[i], &len_data))
+        }
+        println!("{}", mk_sepver(&len_data));
     }
-
-    println!("-------------DEBUG:-------------\ndatas:\n{:#?}\n/datas:\nditer: {}", datas, diter);
 }
 
 fn check_out_of_bound(datas: &Vec<Vec<String>>, diter: usize) {
@@ -91,10 +95,30 @@ fn mk_sepver(len_data: &Vec<usize>) -> String {
     let mut s = String::from(cross);
 
     for len in len_data {
-        for _count in 0..=*len {
+        for _count in 0..=*len - 1 {
             s.push(sepver);
         }
         s.push(cross);
+    }
+
+    s
+}
+
+fn mk_sephor(data: &Vec<String>, len_data: &Vec<usize>) -> String {
+
+    let sephor = '|';
+    let mut s = String::from(sephor);
+
+    for i in 0..=data.len() - 1 {
+        s.push_str(data[i].as_str());
+
+        if len_data[i] > data[i].len() {
+            for _it in 0..len_data[i] - data[i].len() { // get space length
+                s.push(' ');
+            }
+        }
+
+        s.push(sephor);
     }
 
     s
