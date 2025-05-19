@@ -39,6 +39,8 @@ fn main() {
         }
     }
 
+    check_out_of_bound(&datas, diter);
+
     {
         // output
         let len_data = get_len_data(&datas);
