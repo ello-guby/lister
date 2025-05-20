@@ -5,6 +5,8 @@ fn main() {
     let mut datas: Vec<Vec<String>> = vec![vec![]];
 
     let mut diter: usize = 0;
+
+    let mut use_boxdraw: bool = false;
     
     {
         let mut first = true;
@@ -28,7 +30,11 @@ fn main() {
             }
 
             if arg != "-" {
-                datas[diter].push(arg);
+                if arg == "-d" {
+                    use_boxdraw = !use_boxdraw;
+                } else {
+                    datas[diter].push(arg);
+                }
             } else {
                 check_out_of_bound(&datas, diter);
                 
@@ -44,13 +50,13 @@ fn main() {
     {
         // output
         let len_data = get_len_data(&datas);
-        println!("{}", mk_sepver(&len_data));
-        println!("{}", mk_sephor(&datas[0], &len_data));
-        println!("{}", mk_sepver(&len_data));
+        println!("{}", mk_sepver(&len_data, &use_boxdraw, Some(true)));
+        println!("{}", mk_sephor(&datas[0], &len_data, &use_boxdraw));
+        println!("{}", mk_sepver(&len_data, &use_boxdraw, None));
         for i in 1..datas.len() {
-            println!("{}", mk_sephor(&datas[i], &len_data))
+            println!("{}", mk_sephor(&datas[i], &len_data, &use_boxdraw))
         }
-        println!("{}", mk_sepver(&len_data));
+        println!("{}", mk_sepver(&len_data, &use_boxdraw, Some(false)));
     }
 }
 
@@ -90,26 +96,110 @@ fn get_len_data(datas: &Vec<Vec<String>>) -> Vec<usize> {
     return lends;
 }
 
-fn mk_sepver(len_data: &Vec<usize>) -> String {
+fn mk_sepver(len_data: &Vec<usize>, use_boxdraw: &bool, is_top: Option<bool>) -> String {
+    let start_corner: char;
+    let trail: char;
+    let cross_corner: char;
+    let end_corner: char;
+    {
+        let horizontal = '─';
 
-    let sepver = '-';
-    let cross = '+';
-    let mut s = String::from(cross);
+        let cross_mid_corner = '┼';
+
+        let cross_top_corner = '┬';
+        let cross_bottom_corner = '┴';
+
+        let start_mid_corner = '├';
+        let end_mid_corner = '┤';
+
+        let start_top_corner = '┌';
+        let end_top_corner = '┐';
+
+        let start_bottom_corner = '└';
+        let end_bottom_corner = '┘';
+
+        let minus = '-';
+        let plus = '+';
+
+        start_corner = if *use_boxdraw {
+            match is_top {
+                Some(yes) => {
+                    if yes {
+                        start_top_corner
+                    } else {
+                        start_bottom_corner
+                    }
+                },
+                None => start_mid_corner
+            }
+        } else {
+            plus
+        };
+
+        trail = if *use_boxdraw {
+            horizontal
+        } else {
+            minus
+        };
+
+        cross_corner = if *use_boxdraw {
+            match is_top {
+                Some(yes) => {
+                    if yes {
+                        cross_top_corner
+                    } else {
+                        cross_bottom_corner
+                    }
+                },
+                None => cross_mid_corner
+            }
+        } else {
+            plus
+        };
+
+        end_corner = if *use_boxdraw {
+            match is_top {
+                Some(yes) => {
+                    if yes {
+                        end_top_corner
+                    } else {
+                        end_bottom_corner
+                    }
+                },
+                None => end_mid_corner
+            }
+        } else {
+            plus
+        };
+    }
+    let mut s = String::from(start_corner);
 
     for len in len_data {
         for _count in 0..=*len - 1 {
-            s.push(sepver);
+            s.push(trail);
         }
-        s.push(cross);
+        s.push(cross_corner);
     }
+
+    s.pop();
+    s.push(end_corner);
 
     s
 }
 
-fn mk_sephor(data: &Vec<String>, len_data: &Vec<usize>) -> String {
+fn mk_sephor(data: &Vec<String>, len_data: &Vec<usize>, use_boxdraw: &bool) -> String {
 
-    let sephor = '|';
-    let mut s = String::from(sephor);
+    let split: char;
+    {
+        let vertical = '│';
+        let pipe = '|';
+        split = if *use_boxdraw {
+            vertical
+        } else {
+            pipe
+        };
+    }
+    let mut s = String::from(split);
 
     for i in 0..=data.len() - 1 {
         s.push_str(data[i].as_str());
@@ -120,7 +210,7 @@ fn mk_sephor(data: &Vec<String>, len_data: &Vec<usize>) -> String {
             }
         }
 
-        s.push(sephor);
+        s.push(split);
     }
 
     s
