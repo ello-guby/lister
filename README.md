@@ -26,6 +26,11 @@ Will output something off:
 
 ## Requirement
 - [Rust Development Package](https://www.rust-lang.org/tools/install)
+- [git](https://git-scm.com/downloads)
+
+## Clone
+- Change directory to desired place.
+- Run `git clone https://github.com/ello-guby/lister.git`.
 
 ## Build
 - In folder run `cargo build`, `target` folder spawned.
