@@ -16,6 +16,12 @@ Will output something off:
 +---------+---------+
 ```
 
+## Options
+```
+-d:
+    Flip between box drawing display or ASCII display.
+```
+
 # Build and Install
 
 ## Requirement
