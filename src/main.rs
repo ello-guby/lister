@@ -20,6 +20,8 @@ fn main() {
             println!("        |ROW2_COL1|ROW2_COL2|...|");
             println!("        |...      |...      |...|");
             println!("        +---------+---------+---+");
+            println!("options:");
+            println!("    -d: flip between box drawing display or ascii display.");
             exit(0);
         }
         for arg in args {
